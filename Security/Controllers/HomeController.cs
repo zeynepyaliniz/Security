@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Security.Filter;
 using Security.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Security.Controllers
 {
+    [ServiceFilter(typeof(IPWhiteListFilter))]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Security.Filter;
 using Security.Middleware;
 using Security.Models;
 using System;
@@ -25,8 +27,11 @@ namespace Security
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
             services.AddControllersWithViews();
             services.Configure<CheckIpWhiteList>(Configuration.GetSection("IPList"));
+            services.AddScoped<IPWhiteListFilter>();//method seviyesinde ip whitelist filter eklendi security için.
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +49,7 @@ namespace Security
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseMiddleware<IPSafeMiddeware>(); // uygulama seviyesinde IP whiteLiest güvenlik saðlandý. Middleware kullanarak uygama seviyesinde güvenlik yapýldý. bazý IPlere siteye giriþ izni verildi.
+            //app.UseMiddleware<IPSafeMiddeware>(); // uygulama seviyesinde IP whiteLiest güvenlik saðlandý. Middleware kullanarak uygama seviyesinde güvenlik yapýldý. bazý IPlere siteye giriþ izni verildi.
             app.UseRouting();
 
             app.UseAuthorization();
